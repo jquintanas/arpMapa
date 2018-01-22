@@ -2,6 +2,7 @@
 $username="admin";
 $password="admin";
 $database="arpproyecto";
+$servidor ="sql302.mipropia.com";
 ?>
 
 <?php
