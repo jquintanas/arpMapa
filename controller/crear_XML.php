@@ -28,6 +28,7 @@ echo '<markers>';
 while ($row = $result->fetch_assoc()){
   // Add to XML document node
   echo '<marker ';
+  echo'id="' . parseToXML($row['id']) . '" ';
   echo 'name="' . parseToXML($row['name']) . '" ';
   echo 'address="' . parseToXML($row['address']) . '" ';
   echo 'lat="' . $row['lat'] . '" ';

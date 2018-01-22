@@ -1,3 +1,23 @@
+<?php
+require("../../controller/conexiones/conexion.php");
+$user = $_REQUEST['user'];
+$id = $_REQUEST['id'];
+$ruta = "../../controller/cercas_virtuales/crear_XML.php?user=$user&id=$id";
+echo("<script> var url= '$ruta'; </script>");
+$query1 = "SELECT lat1, lat3, lng1, lng2 FROM id_cercas WHERE id='$id' AND user='$user'";
+	$respuesta = $connection->query($query1);
+	$row1 = $respuesta->fetch_assoc();
+	$lat1=$row1['lat1'];
+	$lng1=$row1['lng1'];
+	$lat2=$row1['lat3'];
+	$lng2=$row1['lng2'];
+echo("<script> var norte= '$lat1'; </script>");
+echo("<script> var sur= '$lat2'; </script>");
+echo("<script> var este= '$lng1'; </script>");
+echo("<script> var oeste= '$lng2'; </script>");
+
+?>
+
 <!DOCTYPE html >
  <html>
   <head>
@@ -23,6 +43,7 @@
     <div id="map"></div>
 
     <script>
+		
       var customLabel = {
         restaurant: {
           label: 'R'
@@ -37,12 +58,27 @@
           center: new google.maps.LatLng(-2.117346, -79.903944),
           zoom: 12
         });
+		var rectangle = new google.maps.Rectangle({
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: map,
+          bounds: {
+            north: norte,
+            south: sur,
+            east: este,
+            west: oeste
+          }
+        });
 		/*var trafficLayer = new google.maps.TrafficLayer();
         trafficLayer.setMap(map);*/
         var infoWindow = new google.maps.InfoWindow;
 
           // Change this depending on the name of your PHP or XML file
-          downloadUrl('../controller/crear_XML.php', function(data) {
+          downloadUrl(url,
+					  function(data) {
             var xml = data.responseXML;
             var markers = xml.documentElement.getElementsByTagName('marker');
             Array.prototype.forEach.call(markers, function(markerElem) {
@@ -104,6 +140,10 @@
     </script>
      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvU4DntWhJTFoZvhVV2L84QsTtZfiSBgM&callback=initMap"
   type="text/javascript">
+		 
 	  </script>
+	  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvU4DntWhJTFoZvhVV2L84QsTtZfiSBgM&callback=initMap">
+    </script>
   </body>
 </html>
