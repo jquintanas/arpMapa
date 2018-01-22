@@ -13,9 +13,8 @@ $query1 = "SELECT lat1, lat3, lng1, lng2 FROM id_cercas WHERE id='$id' AND user=
 	$lng2=$row1['lng2'];
 echo("<script> var norte= '$lat1'; </script>");
 echo("<script> var sur= '$lat2'; </script>");
-echo("<script> var este= '$lng1'; </script>");
-echo("<script> var oeste= '$lng2'; </script>");
-
+echo("<script> var oeste= '$lng1'; </script>");
+echo("<script> var este= '$lng2'; </script>");
 ?>
 
 <!DOCTYPE html >
@@ -66,10 +65,10 @@ echo("<script> var oeste= '$lng2'; </script>");
           fillOpacity: 0.35,
           map: map,
           bounds: {
-            north: norte,
-            south: sur,
-            east: este,
-            west: oeste
+            north: parseFloat(norte),
+            south: parseFloat(sur),
+            east: parseFloat(este),
+            west: parseFloat(oeste)
           }
         });
 		/*var trafficLayer = new google.maps.TrafficLayer();
