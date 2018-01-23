@@ -1,5 +1,5 @@
 <?php
-require("conexiones/conexion.php");
+require("../conexiones/conexion.php");
 
 function parseToXML($htmlStr)
 {
