@@ -1,6 +1,25 @@
+<?php
+$user = $_REQUEST['user'];
+echo("<script> var user = $user </script>");
+?>
 <!DOCTYPE html >
  <html>
   <head>
+   <style>
+	button {
+		background-color: black;
+		color: white;
+		border-radius: 10px;
+		width: 150px;
+		height: 40px;
+		
+		
+	}
+	
+	button:hover {
+		background-color: darkred;
+	}
+</style>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>Tech Brain</title>
@@ -23,12 +42,15 @@
     <div id="map"></div>
 
     <script>
+		function redirigir(ruta){
+			location.href=ruta;
+		}
 		var icons = new Map();
-		icons.set("container", "http://icons.iconarchive.com/icons/icons-land/transport/64/Container-icon.png");
-		icons.set("mascota", "http://icons.iconarchive.com/icons/fixicon/farm/48/dog-icon.png");
-		icons.set("vehiculo", "http://icons.iconarchive.com/icons/martz90/hex/64/car-icon.png");
-		icons.set("familia", "http://icons.iconarchive.com/icons/custom-icon-design/flatastic-7/64/Family-icon.png");
-		icons.set("vendedor", "http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-11/64/sale-icon.png");
+		icons.set("container", "../../resources/icons/container.png");
+		icons.set("mascota", "../../resources/icons/mascota.png");
+		icons.set("vehiculo", "../../resources/icons/carro.png");
+		icons.set("familia", "../../resources/icons/familia.png");
+		icons.set("vendedor", "../../resources/icons/vendedor.png");
 
 
       var customLabel = {
@@ -45,11 +67,16 @@
           center: new google.maps.LatLng(-2.117346, -79.903944),
           zoom: 12
         });
-		
+			var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+			
         var infoWindow = new google.maps.InfoWindow;
 
           // Change this depending on the name of your PHP or XML file
-          downloadUrl('../../controller/rastreo_general/crear_XML.php', function(data) {
+         var url = "../../controller/rastreo_general/crear_XML.php";
+			var url = url + "?user="+ user;
+
+          downloadUrl(url, function(data) {
             var xml = data.responseXML;
             var markers = xml.documentElement.getElementsByTagName('marker');
             Array.prototype.forEach.call(markers, function(markerElem) {
@@ -57,34 +84,62 @@
               var name = markerElem.getAttribute('name');
               var address = markerElem.getAttribute('address');
               var type = markerElem.getAttribute('type');
+			  var idgps = markerElem.getAttribute('idgps');
               var point = new google.maps.LatLng(
                   parseFloat(markerElem.getAttribute('lat')),
                   parseFloat(markerElem.getAttribute('lng')));
-			  
 
-              var infowincontent = document.createElement('div');
-              var strong = document.createElement('strong');
-              strong.textContent = name
-              infowincontent.appendChild(strong);
-              infowincontent.appendChild(document.createElement('br'));
-			
-
-              var text = document.createElement('text');
-              text.textContent = address
-              infowincontent.appendChild(text);
-				
-              //var icon = customLabel[type] || {};
               var marker = new google.maps.Marker({
                 map: map,
                 position: point,
 				icon: icons.get(type)
+				  
                 //label: icon.label
               });
+				var text_p = "";
+				var infowincontent = document.createElement('div');
+				var h1 = document.createElement('h1');
+				h1.textContent = "Información del GPS";
+				infowincontent.appendChild(h1);
+				
+				var strong = document.createElement('strong');
+				strong.textContent = "Nombre: ";
+				text_p = document.createElement('t');
+				text_p.textContent = name;
+				infowincontent.appendChild(strong);
+				infowincontent.appendChild(text_p);
+				infowincontent.appendChild(document.createElement('br'));
+				infowincontent.appendChild(document.createElement('br'));
+				
+				var strong = document.createElement('strong');
+				strong.textContent = "Es un: ";
+				text_p = document.createElement('t');
+				text_p.textContent = type;
+				infowincontent.appendChild(strong);
+				infowincontent.appendChild(text_p);
+				infowincontent.appendChild(document.createElement('br'));
+				infowincontent.appendChild(document.createElement('br'));
+				
+				var strong = document.createElement('strong');
+				strong.textContent = "ID del GPS: ";
+				text_p = document.createElement('t');
+				text_p.textContent = idgps;
+				infowincontent.appendChild(strong);
+				infowincontent.appendChild(text_p);
+				infowincontent.appendChild(document.createElement('br'));
+				infowincontent.appendChild(document.createElement('br'));
+				
+				var center = document.createElement('center');
+				var button = document.createElement('button');
+				button.textContent = "Ver Ruta";
+				button.onclick = function(){redirigir("../ruta_alterna/test.php?id="+id);};
+				center.appendChild(button);
+				infowincontent.appendChild(center);
+
               marker.addListener('click', function() {
                 infoWindow.setContent(infowincontent);
                 infoWindow.open(map, marker);
-				  alert(id);
-				  alert(type);
+				  
               });
             });
           });

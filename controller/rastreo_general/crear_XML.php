@@ -1,4 +1,5 @@
 <?php
+$user = $_REQUEST['user'];
 require("../conexiones/conexion.php");
 
 function parseToXML($htmlStr)
@@ -13,7 +14,7 @@ return $xmlStr;
 // Opens a connection to a MySQL server
 
 // Select all the rows in the markers table
-$query = "SELECT * FROM markers WHERE 1";
+$query = "SELECT * FROM markers WHERE user='$user'";
 $result = $connection->query($query);
 if (!$result) {
   die('Invalid query: ' . mysql_error());
@@ -34,6 +35,7 @@ while ($row = $result->fetch_assoc()){
   echo 'lat="' . $row['lat'] . '" ';
   echo 'lng="' . $row['lng'] . '" ';
   echo 'type="' . $row['type'] . '" ';
+  echo 'idgps="' . $row['idgps'] . '" ';
   echo '/>';
 }
 
