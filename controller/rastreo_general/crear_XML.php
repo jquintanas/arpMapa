@@ -1,7 +1,9 @@
 <?php
 $user = $_REQUEST['user'];
 require("../conexiones/conexion.php");
+require("../util/util.php");
 
+$Gps_Del_usuario = obtener_Gps($user,$connection);
 function parseToXML($htmlStr)
 {
 $xmlStr=str_replace('<','&lt;',$htmlStr);
@@ -11,19 +13,25 @@ $xmlStr=str_replace("'",'&#39;',$xmlStr);
 $xmlStr=str_replace("&",'&amp;',$xmlStr);
 return $xmlStr;
 }
+
+header("Content-type: text/xml");
+// Start XML file, echo parent node
+echo '<markers>';
+foreach($Gps_Del_usuario as $gps_buscar){
+	
 // Opens a connection to a MySQL server
 
 // Select all the rows in the markers table
-$query = "SELECT * FROM markers WHERE user='$user'";
+//$query = "SELECT * FROM markers WHERE user='$user'";
+	$query = "SELECT * FROM markers WHERE user=$user AND idgps='$gps_buscar' ORDER BY `id` DESC LIMIT 1";
 $result = $connection->query($query);
 if (!$result) {
   die('Invalid query: ' . mysql_error());
 }
 
-header("Content-type: text/xml");
 
-// Start XML file, echo parent node
-echo '<markers>';
+
+
 
 // Iterate through the rows, printing XML nodes for each
 while ($row = $result->fetch_assoc()){
@@ -38,7 +46,7 @@ while ($row = $result->fetch_assoc()){
   echo 'idgps="' . $row['idgps'] . '" ';
   echo '/>';
 }
-
+}
 // End XML file
 echo '</markers>';
 

@@ -1,8 +1,8 @@
 <?php
 require("../conexiones/conexion.php");
 /*la funcion inserta los datos en una db con los puntos de las coordenadas y asigna un id a la cerca*/
-function dibujar_Cerca($lat1,$lat2,$lat3,$lat4,$lng1,$lng2,$lng3,$lng4,$connection){
-	$query = "INSERT INTO id_cercas(lat1, lat2, lat3, lat4, lng1, lng2, lng3, lng4) VALUES('$lat1','$lat2','$lat3','$lat4','$lng1','$lng2','$lng3','$lng4')";
+function dibujar_Cerca($lat1,$lat2,$lat3,$lat4,$lng1,$lng2,$lng3,$lng4,$connection,$user){
+	$query = "INSERT INTO id_cercas(lat1, lat2, lat3, lat4, lng1, lng2, lng3, lng4, user) VALUES('$lat1','$lat2','$lat3','$lat4','$lng1','$lng2','$lng3','$lng4','$user')";
 	$resultado = $connection->query($query);
 	return($resultado);
 }
@@ -27,15 +27,17 @@ function crear_cerca($id_cerca,$id_gps,$connection){
 	
 }
 
-/*con el id del usuario obtiene todas las cercas que ha creado*/
+/*con el id del usuario obtiene todas las id de las cercas que ha creado*/
 function obtener_Cercas($usuario,$connection){
 	$query_cercas = "SELECT id FROM id_cercas WHERE user='$usuario'";
 	$resultado1 = $connection->query($query_cercas);
-	$row1 = $resultado1->fetch_assoc();
 	$devuelto = array();
-	foreach($row1 as $row){
+	while ($row1 = $resultado1->fetch_assoc()){
+		foreach($row1 as $row){
 		array_push($devuelto,$row);
 	}
+	}
+
 	return($devuelto);
 }
 
@@ -120,5 +122,7 @@ while ($row = $result->fetch_assoc()){
 }
 echo '</markers>';
 }
+
+//print_r(obtener_Cercas("0924995426",$connection));
 
 ?>

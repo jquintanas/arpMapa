@@ -1,39 +1,35 @@
+<?php
+require("../../controller/conexiones/conexion.php");
+require("../../controller/rutas_alternas/default.php");
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Directions service</title>
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
-    </style>
+    <title>Rutas Alternas</title>
+    <link rel="stylesheet" type="text/css" href="../../css/styleRutasAlternas.css">
+    
   </head>
   <body>
-    <div id="map"></div>
-	  <div id="res"></div>
+  
+  <center><a href="#openModal"><button id="modalL"> Ver Rutas Alternas </button></a></center>
+	
+
+<div id="openModal" class="modalDialog">
+	<div>
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Rutas Sugeridas</h2>
+		<div id="res"></div>
+	</div>
+</div>
+
+ <div id="map">
+
+ </div>
+	  
+	  
     <script>
 		 var contentString = "";
       function initMap() {
@@ -44,6 +40,8 @@
           center: {lat: -2.117346, lng: -79.903944}
 			
         });
+		  var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
         directionsDisplay.setMap(map);
 		  directionsDisplay.setPanel(document.getElementById('res'));
 		  
@@ -61,8 +59,8 @@
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
-          origin: /*document.getElementById('start').value*/"-2.139000,-79.910004",
-          destination: /*document.getElementById('end').value*/"-2.145597,-79.966148",
+          origin: /*document.getElementById('start').value*/lat_admin+","+lng_admin,
+          destination: /*document.getElementById('end').value*/lat_id+","+lng_id,
           travelMode: 'DRIVING',
 			provideRouteAlternatives: true
         }, function(response, status) {

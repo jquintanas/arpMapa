@@ -1,42 +1,17 @@
 <?php
-$user = $_REQUEST['user'];
-echo("<script> var user = $user </script>");
+require("../../controller/conexiones/conexion.php");
+require("../../controller/util/util.php");
+require("../../controller/rastreo_general/util_rastreo.php");
 ?>
 
 <!DOCTYPE html >
  <html>
   <head>
-   <style>
-	button {
-		background-color: black;
-		color: white;
-		border-radius: 10px;
-		width: 150px;
-		height: 40px;
-		
-		
-	}
-	
-	button:hover {
-		background-color: darkred;
-	}
-</style>
+   <link rel="stylesheet" type="text/css" href="../../css/styleVistaGeneral.css"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>Tech Brain</title>
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+  
   </head>
 
   <body>
@@ -52,6 +27,7 @@ echo("<script> var user = $user </script>");
 		icons.set("vehiculo", "../../resources/icons/carro.png");
 		icons.set("familia", "../../resources/icons/familia.png");
 		icons.set("vendedor", "../../resources/icons/vendedor.png");
+		icons.set("administrador", "../../resources/icons/admin.png");
 
 
       var customLabel = {

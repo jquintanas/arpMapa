@@ -1,6 +1,8 @@
 <?php
-$user = $_REQUEST['user'];
-echo("<script> var user = $user </script>");
+require("../../controller/conexiones/conexion.php");
+require("../../controller/util/util.php");
+require("../../controller/rastreo_general/util_rastreo.php");
+
 ?>
 <!DOCTYPE html >
  <html>
@@ -51,6 +53,7 @@ echo("<script> var user = $user </script>");
 		icons.set("vehiculo", "../../resources/icons/carro.png");
 		icons.set("familia", "../../resources/icons/familia.png");
 		icons.set("vendedor", "../../resources/icons/vendedor.png");
+		icons.set("administrador", "../../resources/icons/admin.png");
 
 
       var customLabel = {
