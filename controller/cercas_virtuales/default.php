@@ -1,5 +1,5 @@
 <?php
-require("../conexiones/conexion.php");
+//require("../conexiones/conexion.php");
 /*la funcion inserta los datos en una db con los puntos de las coordenadas y asigna un id a la cerca*/
 function dibujar_Cerca($lat1,$lat2,$lat3,$lat4,$lng1,$lng2,$lng3,$lng4,$connection,$user){
 	$query = "INSERT INTO id_cercas(lat1, lat2, lat3, lat4, lng1, lng2, lng3, lng4, user) VALUES('$lat1','$lat2','$lat3','$lat4','$lng1','$lng2','$lng3','$lng4','$user')";
@@ -8,7 +8,7 @@ function dibujar_Cerca($lat1,$lat2,$lat3,$lat4,$lng1,$lng2,$lng3,$lng4,$connecti
 }
 
 /*en base al id de una cerca la funcion asigna hasta 5 gps por cerca*/
-function crear_cerca($id_cerca,$id_gps,$connection){
+function asignar_gps_cerca($id_cerca,$id_gps,$connection){
 	if(count($id_gps) > 0){
 		$query = "INSERT INTO cercas(id_cerca,gps1) VALUES('$id_cerca','$id_gps[0]')";
 		$resultado = $connection->query($query);
@@ -30,6 +30,20 @@ function crear_cerca($id_cerca,$id_gps,$connection){
 /*con el id del usuario obtiene todas las id de las cercas que ha creado*/
 function obtener_Cercas($usuario,$connection){
 	$query_cercas = "SELECT id FROM id_cercas WHERE user='$usuario'";
+	$resultado1 = $connection->query($query_cercas);
+	$devuelto = array();
+	while ($row1 = $resultado1->fetch_assoc()){
+		foreach($row1 as $row){
+		array_push($devuelto,$row);
+	}
+	}
+
+	return($devuelto);
+}
+
+/*con el id del usuario obtiene todas los nombres de las cercas que ha creado*/
+function obtener_Nombres_Cercas($usuario,$connection){
+	$query_cercas = "SELECT name FROM id_cercas WHERE user='$usuario'";
 	$resultado1 = $connection->query($query_cercas);
 	$devuelto = array();
 	while ($row1 = $resultado1->fetch_assoc()){
@@ -121,6 +135,80 @@ while ($row = $result->fetch_assoc()){
 	
 }
 echo '</markers>';
+}
+
+function validar_Salida_Del_perimetro_Notificaciones($connection,$usuario){
+	$cercas = obtener_Cercas($usuario,$connection);
+	
+	function parseToXML($htmlStr)
+{
+$xmlStr=str_replace('<','&lt;',$htmlStr);
+$xmlStr=str_replace('>','&gt;',$xmlStr);
+$xmlStr=str_replace('"','&quot;',$xmlStr);
+$xmlStr=str_replace("'",'&#39;',$xmlStr);
+$xmlStr=str_replace("&",'&amp;',$xmlStr);
+return $xmlStr;
+}
+	
+
+header("Content-type: text/xml");
+	echo '<markers>';
+	foreach($cercas as $cerca){
+		$query1 = "SELECT lat1, lat3, lng1, lng2 FROM id_cercas WHERE id='$cerca' AND user='$usuario'";
+	$respuesta = $connection->query($query1);
+	$row1 = $respuesta->fetch_assoc();
+	$lat1=$row1['lat1'];
+	$lng1=$row1['lng1'];
+	$lat2=$row1['lat3'];
+	$lng2=$row1['lng2'];
+		
+	
+	$id_gps = obtener_Gps_asociados($connection,$cerca);
+for($i=0;$i < count($id_gps);$i++){
+	$gps = $id_gps[$i];
+	$query = "SELECT * FROM markers WHERE idgps='$gps' AND user='$usuario'";
+	$result = $connection->query($query);
+	// Iterate through the rows, printing XML nodes for each
+while ($row = $result->fetch_assoc()){
+  // Add to XML document node
+	
+	if($row['lat'] <= $lat1 and $row['lat'] >= $lat2){
+		if($row['lng'] >= $lng1 and $row['lng'] <= $lng2){
+			
+	}
+	else{
+		echo '<marker ';
+			  echo'id="' . parseToXML($row['id']) . '" ';
+			  echo 'name="' . parseToXML($row['name']) . '" ';
+			  echo 'address="' . parseToXML($row['address']) . '" ';
+			  echo 'lat="' . $row['lat'] . '" ';
+			  echo 'lng="' . $row['lng'] . '" ';
+			  echo 'type="' . $row['type'] . '" ';
+				echo 'idgps="' . parseToXML($row['idgps']) . '" ';
+			  echo '/>';
+	}
+}
+	else{
+		echo '<marker ';
+			  echo'id="' . parseToXML($row['id']) . '" ';
+			  echo 'name="' . parseToXML($row['name']) . '" ';
+			  echo 'address="' . parseToXML($row['address']) . '" ';
+			  echo 'lat="' . $row['lat'] . '" ';
+			  echo 'lng="' . $row['lng'] . '" ';
+			  echo 'type="' . $row['type'] . '" ';
+				echo 'idgps="' . parseToXML($row['idgps']) . '" ';
+			  echo '/>';
+	}
+}
+
+// End XML file
+
+	
+}
+
+		
+	}
+	echo '</markers>';
 }
 
 //print_r(obtener_Cercas("0924995426",$connection));

@@ -38,5 +38,12 @@ function actualizar_Posicion_Administrador($lat,$lng,$user,$connection,$nombre){
 	}
 }
 
-//actualizar_Posicion_Administrador("0952","52","0924995426",$connection,"poveda 2");
+//inserta datos del gps a la base de datos para els sitema de rastro
+
+function insertar_Datos_del_Gps($user,$nombre,$lat,$lng,$type,$idGps,$connection){
+	$query = "INSERT INTO markers(name,lat,lng,type,user,idgps) VALUES('$nombre','$lat','$lng','$type','$user','$idGps')";
+	$resultado = $connection->query($query);
+	
+}
+
 ?>
