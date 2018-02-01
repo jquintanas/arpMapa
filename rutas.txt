@@ -1,0 +1,45 @@
+rastreo con estado del trafico:
+
+http://sismedic.mipropia.com/arp/view/rastreo_general_trafico/vistaGeneralGPS.php?user="0924995426"&name=Andres Poveda&lat=-2.112116&lng=-79.955594
+
+rastreo sin estado del trafico
+
+http://sismedic.mipropia.com/arp/view/rastreo_general_trafico/vistaGeneralGPS.php?user="0924995426"&name=Andres Poveda&lat=-2.112116&lng=-79.955594
+
+******
+user debe ir entre comillas y es el user del admin
+name es nombre del admin
+lat y lng son las coordenadas del gps del admin
+
+
+
+----------------------
+para la opcion de ver cercas virtuales
+
+http://sismedic.mipropia.com/arp/view/ver_cercas_usuario/default.php?user=0924995426
+
+******
+juser del admin sin comillas tal como se ve ahi
+
+--------------------------
+
+
+para la parte de notificaciones sacas el xml de esta ruta
+http://sismedic.mipropia.com/arp/controller/notificaciones/default.php?user=0924995426
+
+/***** user es el user del admin
+
+
+--------------
+
+agergar una coordenada nueva a la base de datos para los que no son admin
+
+http://sismedic.mipropia.com/arp/controller/add_posicion/default.php?user=user del admin&lat=cordenada gps usuario&lng= coordenada usuario&name=nombre del usuario&type=tipo de usuario&gps=id del gps del usuario
+
+------
+agregar una cerca
+
+http://sismedic.mipropia.com/arp/controller/add_cerca/default.php?user=user del admin&name= nombre de la cerca&lat1=coor gps&lng1=coor gps&lng2= coor gps&lat2=coor user
+
+
+para la parte de insertar cercas primero debes crear la cerca y despues de eso debes agregas los gps a la cerca

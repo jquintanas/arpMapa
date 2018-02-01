@@ -15,7 +15,7 @@ $nombres_cercas = obtener_Nombres_Cercas($user,$connection);
 <?php
 	$i = 0;
 foreach($cercas as $idC){
-	$ruta = "../cercas_virtuales/v_default.php?user=".$user."&id=".$idC;
+	$ruta = "ver_modal.php?user=".$user."&id=".$idC;
 	$nombre = $nombres_cercas[$i];
 ?>
 	<a href="<?php echo($ruta); ?>"> <button> Cerca: <?php echo($nombre); ?> </button> </a>

@@ -32,7 +32,7 @@ function actualizar_Posicion_Administrador($lat,$lng,$user,$connection,$nombre){
 		//aqui un update
 	}
 	else{
-		$query = "INSERT INTO markers(name,lat,lng,type,user,idgps) VALUES('$nombre','$lat','$lng','administrador','$user','0')";
+		$query = "INSERT INTO markers(name,lat,lng,type,user,idgps) VALUES('$nombre','$lat','$lng','administrador','$user','admin')";
 		$resultado = $connection->query($query);
 		//aqui un insert
 	}

@@ -1,5 +1,6 @@
 <?php
 require("default.php");
+require("../conexiones/conexion.php");
 $user = $_REQUEST['user'];
 $id_cerca = $_REQUEST['id'];
 if($user == "" or $id_cerca == "") {

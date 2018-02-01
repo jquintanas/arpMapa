@@ -10,4 +10,6 @@ $idGps = $_REQUEST['gps'];
 
 insertar_Datos_del_Gps($user,$nombre,$lat,$lng,$tipo,$idGps,$connection);
 
+
+
 ?>
